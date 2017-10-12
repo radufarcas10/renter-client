@@ -55,11 +55,6 @@ module.exports = {
     inline: true,
     open: true,
     port: '8080',
-    // It suppress error shown in console, so it has to be set to false.
-    // quiet: false,
-    // It suppress everything except error, so it has to be set to false as well
-    // to see success build.
-    // noInfo: false,
     stats: {
       hash: true,           // add the hash of the compilation
       version: false,       // add webpack version information
