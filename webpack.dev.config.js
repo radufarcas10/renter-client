@@ -15,7 +15,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name][hash:8].js',
+    filename: '[name].js', //we will only use [name].[chunkhash:8].js in production
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -47,11 +47,15 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
+    new webpack.NamedModulesPlugin(), //for prod we will use webpack.HashedModuleIdsPlugin()
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({ template: 'public/index.html' }),
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'],
+      name: 'vendor',
+      minChunks: Infinity
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'runtime',
       minChunks: Infinity
     }),
     new webpack.optimize.CommonsChunkPlugin({
