@@ -4,15 +4,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
+const VENDOR = ['react', 'react-dom', 'react-router-dom'];
+
 module.exports = {
-  context: path.resolve('src/'),
+  // context: path.resolve('src/'),
   devtool: 'eval',
-  entry: [
-    'react-hot-loader/patch',
-    './index.js',
-  ],
+  entry: {
+    bundle: './src/index.js',
+    vendor: VENDOR
+  },
   output: {
-    filename: 'js/[name].js',
+    path: path.join(__dirname, 'dist'),
+    filename: '[name][hash:8].js',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -26,6 +29,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
+        exclude: /node_modules/,
         use: [
           { loader: 'css-hot-loader' },
           { loader: 'style-loader' },
@@ -38,7 +42,6 @@ module.exports = {
           },
           { loader: 'sass-loader' },
         ],
-        exclude: /node_modules/,
       },
     ],
   },
@@ -46,7 +49,19 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin({ template: '../public/index.html' }),
+    new HtmlWebpackPlugin({ template: 'public/index.html' }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor', 'manifest'],
+      minChunks: Infinity
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      async: true,
+      children: 4,
+      minChunks: 3
+    }),
+    new webpack.DefinePlugin({
+      DEV: true
+    })
     // new webpack.IgnorePlugin(/\.svg$/),
     // new OfflinePlugin({ caches: { main: [] } }),
   ],
