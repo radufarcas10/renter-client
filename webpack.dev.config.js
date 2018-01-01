@@ -8,14 +8,14 @@ const VENDOR = ['react', 'react-dom', 'react-router-dom'];
 
 module.exports = {
   // context: path.resolve('src/'),
-  devtool: 'eval',
+  devtool: 'inline-source-map',
   entry: {
     bundle: './src/index.js',
     vendor: VENDOR
   },
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: '[name].js', //we will only use [name].[chunkhash:8].js in production
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].bundle.js', //we will only use [name].[chunkhash:8].js in production
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -73,7 +73,10 @@ module.exports = {
     hot: true,
     inline: true,
     open: true,
+    // host: '192.168.0.106',
     port: '8080',
+    // https: true,
+    compress: true,
     stats: {
       hash: true,           // add the hash of the compilation
       version: false,       // add webpack version information
@@ -81,6 +84,8 @@ module.exports = {
       assets: false,        // add assets information
       chunks: true,         // add chunk information
       chunkModules: false,  // add built modules information to chunk information
+      env: true,
+      performance: true,
       modules: false,       // add built modules information
       cached: true,         // add also information about cached (not built) modules
       reasons: true,        // add information about the reasons why modules are included
